@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HeroService } from '../hero.service';
+import { Hero } from '../heros/hero';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +11,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  heroes$!: Observable<Hero[]>;
+  constructor(private heroService: HeroService) { }
 
   ngOnInit(): void {
+    this.heroes$ = this.heroService.getHeroes().pipe(
+      take(5)
+    )
   }
-
 }
