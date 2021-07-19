@@ -5,11 +5,15 @@
   </div>
   <h2>My hero lists</h2>
   <ul class="heroes" *ngIf="heroes$ | async as heroes">
-    <li *ngFor="let hero of heroes"
-        [class.selected]= "hero === selectedHero"
-        (click)="onSelect(hero)"
+    <li
+      *ngFor="let hero of heroes"
+      [class.selected]="hero === selectedHero"
+      (click)="onSelect(hero)"
     >
-      <span class="badge">{{ hero.id }}</span>- {{ hero.name }}
+      <a routerLink="/heroes/{{hero.id}}" routerLinkActive="router-link-active" >
+        <span class="badge">{{ hero.id }}</span
+        >- {{ hero.name }}
+      </a>
     </li>
   </ul>
 </div>

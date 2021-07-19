@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { HeroService } from '../hero.service';
 import { MessageService } from '../message.service';
 import { Hero } from './hero';
-import { Heroes } from './mock-heroes';
 
 @Component({
   selector: 'app-heros',
