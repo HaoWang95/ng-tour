@@ -1,9 +1,7 @@
 <div>
   <p>heros works!</p>
   <div *ngIf="selectedHero">
-    <h2>{{ selectedHero.id }} - {{ selectedHero.name }}</h2>
-    <label for="hero-name">Hero name:</label>
-    <input id="hero-name" [(ngModel)]="selectedHero.name" placeholder="name" />
+    <app-hero-detail [hero]="selectedHero"></app-hero-detail>
   </div>
   <h2>My hero lists</h2>
   <ul class="heroes">
