@@ -4,7 +4,7 @@
     <app-hero-detail [hero]="selectedHero"></app-hero-detail>
   </div>
   <h2>My hero lists</h2>
-  <ul class="heroes">
+  <ul class="heroes" *ngIf="heroes$ | async as heroes">
     <li *ngFor="let hero of heroes"
         [class.selected]= "hero === selectedHero"
         (click)="onSelect(hero)"
