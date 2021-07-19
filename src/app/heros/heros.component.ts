@@ -30,5 +30,4 @@ export class HerosComponent implements OnInit {
     this.heroes$ = this.heroService.getHeroes();
     this.messageService.add('Hero component received heroes data');
   }
-
 }
