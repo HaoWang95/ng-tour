@@ -1,9 +1,16 @@
 <p>dashboard works!</p>
 <h2>Top Heroes</h2>
 <div class="heroes-menu">
-    <div *ngIf="heroes$ | async as heroes">
-        <a *ngFor="let hero of heroes">
-            {{hero.name}}
+  <div *ngIf="heroes$ | async as heroes">
+    <ul *ngFor="let hero of heroes">
+      <li>
+        <a
+          routerLink="/heroes/{{hero.id}}"
+          routerLinkActive="router-link-active"
+        >
+          {{ hero.id }} - {{ hero.name }}
         </a>
-    </div>
+      </li>
+    </ul>
+  </div>
 </div>
