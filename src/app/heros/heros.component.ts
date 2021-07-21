@@ -18,19 +18,19 @@ export class HerosComponent implements OnInit, OnDestroy {
 
   heroesData?: Hero[]
 
-  constructor(private heroService:HeroService, private messageService: MessageService) { }
+  constructor(private heroService: HeroService, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.getHeros()
   }
 
   selectedHero?: Hero;
-  onSelect(hero: Hero):void{
+  onSelect(hero: Hero): void {
     this.selectedHero = hero;
     this.messageService.add(`hero ${hero.id} - ${hero.name} is selected`)
   }
 
-  getHeros(): void{
+  getHeros(): void {
     this.heroes$ = this.heroService.getHeroes();
     this.heroService.fetchHeroes().subscribe(
       data => this.heroesData = data
@@ -38,20 +38,20 @@ export class HerosComponent implements OnInit, OnDestroy {
     this.messageService.add('Hero component received heroes data');
   }
 
-  add(name: string): void{
+  add(name: string): void {
     name = name.trim();
-    if (!name){
+    if (!name) {
       return;
     }
-    
-    this.heroService.addHero({name} as Hero).subscribe(
+
+    this.heroService.addHero({ name } as Hero).subscribe(
       hero => this.heroesData?.push(hero)
     )
   }
 
-  delete(id: number): void{
+  delete(id: number): void {
     id = Number(id);
-    if(!id){
+    if (!id) {
       return;
     }
     this.heroService.deleteHero(id).subscribe(
@@ -59,7 +59,7 @@ export class HerosComponent implements OnInit, OnDestroy {
     )
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     console.log('hero component destoryed')
   }
 }
