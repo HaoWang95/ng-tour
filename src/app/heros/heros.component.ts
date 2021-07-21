@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { HeroService } from '../hero.service';
 import { MessageService } from '../message.service';
 import { Hero } from './hero';
@@ -15,6 +16,8 @@ export class HerosComponent implements OnInit, OnDestroy {
   heroes$!: Observable<Hero[]>;
   postHero$!: Observable<Hero>;
 
+  heroesData?: Hero[]
+
   constructor(private heroService:HeroService, private messageService: MessageService) { }
 
   ngOnInit(): void {
@@ -29,6 +32,9 @@ export class HerosComponent implements OnInit, OnDestroy {
 
   getHeros(): void{
     this.heroes$ = this.heroService.getHeroes();
+    this.heroService.fetchHeroes().subscribe(
+      data => this.heroesData = data
+    )
     this.messageService.add('Hero component received heroes data');
   }
 
@@ -37,7 +43,10 @@ export class HerosComponent implements OnInit, OnDestroy {
     if (!name){
       return;
     }
-    this.heroService.addHero({name} as Hero)
+    
+    this.heroService.addHero({name} as Hero).subscribe(
+      hero => this.heroesData?.push(hero)
+    )
   }
 
   delete(id: number): void{
@@ -45,10 +54,12 @@ export class HerosComponent implements OnInit, OnDestroy {
     if(!id){
       return;
     }
-    this.heroService.deleteHero(id).subscribe()
+    this.heroService.deleteHero(id).subscribe(
+      hero => this.heroesData?.filter(h => h.id != hero.id)
+    )
   }
 
   ngOnDestroy(){
-
+    console.log('hero component destoryed')
   }
 }

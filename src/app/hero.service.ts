@@ -29,6 +29,14 @@ export class HeroService {
     );
   }
 
+  fetchHeroes(): Observable<Hero[]>{
+    this.log('fetch heroes data, do not forget to subscribe');
+    return this.http.get<Hero[]>(this.heroUrl).pipe(
+      tap(_ => console.log('all data has been fetched succesfully')),
+      catchError(this.handleError<Hero[]>('Errors at fetchHeroes()', []))
+    )
+  }
+
   // getHero(id: Number): Observable<Hero | undefined> {
   //   let foundHero: Hero | undefined = Heroes.find(item => item.id === id);
   //   this.messageService.add(`HeroService: fetch hero id=${id}`);
@@ -56,6 +64,14 @@ export class HeroService {
       tap(_ => this.log(`deleted hero id=${id}`)),
       catchError(this.handleError<Hero>('deleteHero'))
     )
+  }
+
+  updateHero(hero: Hero): Observable<any>{
+    const updateUrl = `${this.heroUrl}/${hero.id}`;
+    return this.http.put(updateUrl, hero, this.httpOptions).pipe(
+      tap(_ => console.log(`updated hero id=${hero.id}`)),
+      catchError(this.handleError<any>('updateHero'))
+    ); 
   }
 
   private log(msg: string) {

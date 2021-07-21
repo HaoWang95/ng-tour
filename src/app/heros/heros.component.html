@@ -11,9 +11,9 @@
     <button class="add-button" (click)="add(heroName.value)">Add hero</button>
   </div>
   <h2>My hero lists</h2>
-  <ul class="heroes" *ngIf="heroes$ | async as heroes">
+  <ul class="heroes" *ngIf="heroesData">
     <li
-      *ngFor="let hero of heroes"
+      *ngFor="let hero of heroesData"
       [class.selected]="hero === selectedHero"
       (click)="onSelect(hero)"
     >
