@@ -1,7 +1,14 @@
 <div>
-  <p>heros works!</p>
+  <h2>heros works!</h2>
   <div *ngIf="selectedHero">
     <app-hero-detail [hero]="selectedHero"></app-hero-detail>
+  </div>
+  <div>
+    <label for="new-hero">Enter hero name: </label>
+    <input id="new-hero" #heroName />
+
+    <!-- (click) pass the input value and add it to backend -->
+    <button class="add-button" (click)="add(heroName.value)">Add hero</button>
   </div>
   <h2>My hero lists</h2>
   <ul class="heroes" *ngIf="heroes$ | async as heroes">
@@ -14,6 +21,7 @@
         <span class="badge">{{ hero.id }}</span
         >- {{ hero.name }}
       </a>
+      <button class="delete-button" title="delete hero" (click)="delete(hero.id)">x</button>
     </li>
   </ul>
 </div>

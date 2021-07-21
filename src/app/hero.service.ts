@@ -4,7 +4,7 @@ import { Heroes } from './heros/mock-heroes';
 import { Observable, of, throwError } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, toArray } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,14 +18,14 @@ export class HeroService {
   ) { }
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type':'application/json'
+      'Content-Type': 'application/json'
     })
   }
   getHeroes(): Observable<Hero[]> {
     this.log('fetch heroes data')
     return this.http.get<Hero[]>(this.heroUrl).pipe(
       tap(_ => console.log('items fetched')),
-      catchError(this.handleError<Hero[]>('getHeroes',[]))
+      catchError(this.handleError<Hero[]>('getHeroes', []))
     );
   }
 
@@ -35,7 +35,7 @@ export class HeroService {
   //   return of(foundHero)
   // }
 
-  getHero(id: number): Observable<Hero>{
+  getHero(id: number): Observable<Hero> {
     const url = `${this.heroUrl}/${id}`;
     return this.http.get<Hero>(url).pipe(
       tap(_ => console.log(`Fetch single hero item by id ${id}`)),
@@ -43,15 +43,30 @@ export class HeroService {
     )
   }
 
-  private log(msg: string){
+  addHero(hero: Hero): Observable<Hero> {
+    return this.http.post<Hero>(this.heroUrl, hero, this.httpOptions).pipe(
+      tap((newHero: Hero) => this.log(`added hero w/ id=${newHero}`)),
+      catchError(this.handleError<Hero>('addHero'))
+    )
+  }
+
+  deleteHero(id: number): Observable<Hero> {
+    const deleteUrl = `${this.heroUrl}/${id}`;
+    return this.http.delete<Hero>(deleteUrl, this.httpOptions).pipe(
+      tap(_ => this.log(`deleted hero id=${id}`)),
+      catchError(this.handleError<Hero>('deleteHero'))
+    )
+  }
+
+  private log(msg: string) {
     this.messageService.add(`HeroService: ${msg}`);
   }
 
-  private handleError<X>(operation = 'operation', result?: X){
+  private handleError<X>(operation = 'operation', result?: X) {
     return (error: any): Observable<X> => {
       console.error(error);
       this.log(`${operation} failed: ${error.message}`);
       return of(result as X)
-    } 
+    }
   }
 }
