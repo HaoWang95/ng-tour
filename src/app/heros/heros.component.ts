@@ -15,12 +15,12 @@ export class HerosComponent implements OnInit, OnDestroy {
   heroes$!: Observable<Hero[]>;
   postHero$!: Observable<Hero>;
 
-  heroesData: Hero[] = []
+  heroesData: Hero[] = [];
 
   constructor(private heroService: HeroService, private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.getHeros()
+    this.getHeros();
   }
 
   selectedHero?: Hero;
@@ -34,6 +34,9 @@ export class HerosComponent implements OnInit, OnDestroy {
     this.heroService.fetchHeroes().subscribe(
       data => this.heroesData = data
     );
+    for(let item of this.heroesData){
+      console.log(item.id, item.name)
+    }
     this.messageService.add('Hero component received heroes data');
   }
 
@@ -42,7 +45,6 @@ export class HerosComponent implements OnInit, OnDestroy {
     if (!name) {
       return;
     }
-
     this.heroService.addHero({ name } as Hero).subscribe(
       hero => this.heroesData.push(hero)
     )
